@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Body from "./Body";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { cityText: " ", showZipCodes:false, city: ""};
+    this.handleChange = this.handleChange.bind(this);
+    this.showCards = this.showCards.bind(this);
+    this.clear = this.clear.bind(this);
+  }
+
+  handleChange(e) {
+    // for handling the text box in the zip code
+    this.setState({
+      cityText: e.target.value
+    });
+  }
+
+  showCards(e) { // event handler for the button. 
+        this.clear()
+        this.setState( // sets the state according to the input in the text box. 
+          {city: this.state.cityText, showZipCodes:true}
+        )
+        console.log("Button val: "+ this.state.city)
+    }
+
+  
+    clear() { //clears the div according to the ternary operator. 
+      this.setState({showZipCodes:false});
+    }
+  
+
+  render() {
+    const showZipCodes = this.state.showZipCodes;
+    const city = this.state.city;
+    return (
+      <div className="container">
+        <h1>City Search</h1>
+        <input type="text" onChange={this.handleChange} />
+        <button value = {this.state.city} onClick={this.showCards}>Submit</button>
+        <button onClick={this.clear}>Clear</button>
+        {showZipCodes
+        ?  <Body city={city}/>
+        :  <div></div>
+        }
+      </div>
+    );
+  }
 }
 
 export default App;
